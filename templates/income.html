@@ -1,42 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Manage Income</title>
-    <link rel="stylesheet" type="text/css" href="../public/styles.css">
+    <title>Personal Finance Manager</title>
+    <link rel="stylesheet" type="text/css" href="../static/styles.css">
 </head>
 <body>
     <header>
-        <h1>Manage Income</h1>
+        <h1>Personal Finance Manager</h1>
     </header>
+    <nav>
+        <button onclick="document.getElementById('income').scrollIntoView();">Track Income</button>
+        <button onclick="document.getElementById('expenses').scrollIntoView();">Track Expenses</button>
+    </nav>
     <div class="container">
-        <section>
-            <h2>Add Income</h2>
-            <form id="income-form">
-                <label for="source">Source:</label>
-                <input type="text" id="source" name="source" required>
-                <label for="amount">Amount:</label>
-                <input type="number" id="amount" name="amount" required>
-                <label for="date">Date:</label>
-                <input type="date" id="date" name="date" required>
-                <button type="submit">Add Income</button>
-            </form>
+        <section id="welcome">
+            <h2>Welcome!</h2>
+            <p>Manage your personal finances with ease. Track your income and expenses, set budgets, and monitor your financial health.</p>
+        </section>
+        <section id="income">
+            <h2>Track Income</h2>
+            <p>Keep track of your income sources, amounts, and dates. Click below to add or view your income records.</p>
+            <button onclick="window.location.href='income.html'">Manage Income</button>
+        </section>
+        <section id="expenses">
+            <h2>Track Expenses</h2>
+            <p>Monitor your spending by tracking your expenses. Click below to add or view your expense records.</p>
+            <button onclick="window.location.href='expenses.html'">Manage Expenses</button>
         </section>
     </div>
-    <script>
-        document.getElementById('income-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const source = document.getElementById('source').value;
-            const amount = document.getElementById('amount').value;
-            const date = document.getElementById('date').value;
-
-            fetch('http://localhost:5000/incomes', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ source, amount, date })
-            }).then(response => response.json())
-              .then(data => alert('Income added: ' + data))
-              .catch(error => console.error('Error:', error));
-        });
-    </script>
+    <footer>
+        <p>&copy; 2024 Personal Finance Manager - Ditrung Duong. All Rights Reserved.</p>
+    </footer>
 </body>
 </html>
