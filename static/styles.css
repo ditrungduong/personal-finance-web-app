@@ -12,7 +12,7 @@ body {
     z-index: 1;
 }
 
-body {
+body::before{
     content: '';
     position: absolute;
     top: 0;
