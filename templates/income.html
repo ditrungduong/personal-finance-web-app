@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Income</title>
+    <link rel="stylesheet" type="text/css" href="../public/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Manage Income</h1>
+    </header>
+    <div class="container">
+        <section>
+            <h2>Add Income</h2>
+            <form id="income-form">
+                <label for="source">Source:</label>
+                <input type="text" id="source" name="source" required>
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" required>
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+                <button type="submit">Add Income</button>
+            </form>
+        </section>
+    </div>
+    <script>
+        document.getElementById('income-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const source = document.getElementById('source').value;
+            const amount = document.getElementById('amount').value;
+            const date = document.getElementById('date').value;
+
+            fetch('http://localhost:5000/incomes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ source, amount, date })
+            }).then(response => response.json())
+              .then(data => alert('Income added: ' + data))
+              .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

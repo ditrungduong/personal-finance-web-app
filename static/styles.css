@@ -1,0 +1,108 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('../public/background.jpg'); /* Ensure the path is correct */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    color: #fff; /* White text for contrast */
+    position: relative;
+    z-index: 1;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Black overlay with 40% opacity */
+    z-index: -1; /* Place it behind all content */
+}
+
+header {
+    background-color: rgba(34, 139, 34, 0.8); /* Forest green semi-transparent background */
+    color: white; /* Ensure the header text color is set to white */
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav {
+    text-align: center;
+    margin: 20px 0;
+}
+
+nav button {
+    margin: 0 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: rgba(50, 205, 50, 0.8); /* Lime green semi-transparent background */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+nav button:hover {
+    background-color: rgba(0, 100, 0, 0.8); /* Dark green background on hover */
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+}
+
+section {
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    color: #333; /* Dark text color for readability */
+}
+
+h1, h2 {
+    color: #fff; /* Default white text color */
+}
+
+#welcome h2 {
+    color: #FFD700; /* Bright yellow for Welcome! text */
+}
+
+#income h2 {
+    color: #32CD32; /* Bright green for Track Income text */
+}
+
+#expenses h2 {
+    color: #1E90FF; /* Bright blue for Track Expenses text */
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: rgba(50, 205, 50, 0.8); /* Lime green semi-transparent background */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: rgba(0, 100, 0, 0.8); /* Dark green background on hover */
+}
+
+footer {
+    background-color: rgba(34, 139, 34, 0.8); /* Forest green background */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    z-index: 2;
+}
