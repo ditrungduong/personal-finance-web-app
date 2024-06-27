@@ -39,7 +39,7 @@ nav button {
     margin: 0 15px;
     padding: 10px 20px;
     font-size: 16px;
-    color: white;
+    color: white; /* Text color for navigation buttons */
     background-color: rgba(50, 205, 50, 0.8); /* Lime green semi-transparent background */
     border: none;
     cursor: pointer;
@@ -67,11 +67,11 @@ section {
 }
 
 h1, h2 {
-    color: #fff; /* Default white text color */
+    color: #ffffff; /* Default white text color */
 }
 
 #welcome h2 {
-    color: #FFD700; /* Bright yellow for Welcome! text */
+    color: #152001; /* Bright yellow for Welcome! text */
 }
 
 #income h2 {
@@ -82,10 +82,11 @@ h1, h2 {
     color: #1E90FF; /* Bright blue for Track Expenses text */
 }
 
+/* General button styles */
 button {
     padding: 10px 20px;
     font-size: 16px;
-    color: white;
+    color: white; /* Text color for general buttons */
     background-color: rgba(50, 205, 50, 0.8); /* Lime green semi-transparent background */
     border: none;
     cursor: pointer;
@@ -96,6 +97,7 @@ button:hover {
     background-color: rgba(0, 100, 0, 0.8); /* Dark green background on hover */
 }
 
+/* Footer styles */
 footer {
     background-color: rgba(34, 139, 34, 0.8); /* Forest green background */
     color: white;
@@ -105,4 +107,30 @@ footer {
     width: 100%;
     bottom: 0;
     z-index: 2;
+}
+
+/* Specific button styles */
+.nav-track-income, .btn-manage-income {
+    background-color: rgba(60, 179, 113, 0.8); /* Medium sea green background */
+}
+
+.nav-track-income:hover, .btn-manage-income:hover {
+    background-color: rgba(34, 139, 34, 0.8); /* Dark green background on hover */
+}
+
+.nav-track-expenses, .btn-manage-expenses {
+    background-color: rgba(50, 143, 205, 0.8); /* Lime green background */
+}
+
+.nav-track-expenses:hover, .btn-manage-expenses:hover {
+    background-color: rgba(24, 64, 196, 0.8); /* Dark green background on hover */
+}
+
+/* Specific button text colors */
+.btn-manage-income {
+    color: white; /* Text color for Manage Income button */
+}
+
+.btn-manage-expenses {
+    color: white; /* Text color for Manage Expenses button */
 }
