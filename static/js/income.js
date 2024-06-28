@@ -148,4 +148,15 @@ function cancelEdit() {
     if (existingForm) {
         existingForm.remove(); // Remove the edit form if the user cancels
     }
+
+    const addIncomeForm = document.getElementById('add-income-form');
+    if (addIncomeForm && addIncomeForm.style.display === 'block') {
+        addIncomeForm.style.display = 'none'; // Hide the add income form if it's being displayed
+    }
+
+    // Reset the form fields
+    document.getElementById('income-id').value = '';
+    document.getElementById('source').value = '';
+    document.getElementById('amount').value = '';
+    document.getElementById('date').value = '';
 }
