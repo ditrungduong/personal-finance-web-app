@@ -130,7 +130,7 @@ function deleteIncome(id) {
                     return JSON.parse(text); // Attempt to parse JSON manually
                 } catch (error) {
                     console.error('JSON parse error:', error);
-                    throw new Error('Failed to parse JSON: ' + error.message);
+                    throw new Error('Failed to parse JSON: ' + error.message)
                 }
             });
         })
