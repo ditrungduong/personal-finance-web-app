@@ -1,4 +1,3 @@
-// Event listener for the main income form submission
 document.getElementById('income-form').addEventListener('submit', function(e) {
     e.preventDefault(); // Prevent the default form submission behavior
     const id = document.getElementById('income-id').value;
@@ -9,33 +8,38 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
     const method = id ? 'PUT' : 'POST';
     const url = id ? `/income/${id}` : '/income';
 
-    // Send a POST or PUT request based on the presence of the income ID
     fetch(url, {
         method: method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ source, amount, date })
     })
     .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
-        return response.json();
+        console.log('Response status:', response.status); // Log response status
+        return response.text().then(text => {
+            console.log('Response text:', text); // Log response text
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return JSON.parse(text); // Attempt to parse JSON manually
+        });
     })
     .then(data => {
+        console.log('Server response:', data); // Log server response for debugging
         alert(id ? 'Income updated' : 'Income added');
         location.reload(); // Reload the page to reflect changes
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+        console.error('Error:', error); // Log error for debugging
+        alert('An error occurred. Please try again.');
+    });
 });
 
-// Function to show the add income form
 function showAddIncomeForm() {
     document.getElementById('add-income-form').style.display = 'block'; // Show the add income form
     document.getElementById('form-title').textContent = 'Add Income'; // Set form title
     document.getElementById('cancel-edit').style.display = 'inline'; // Show the cancel button
 }
 
-// Function to handle editing income
 function editIncome(id, source, amount, date) {
     // Remove any existing edit forms
     const existingForm = document.querySelector('.edit-income-form');
@@ -85,27 +89,33 @@ function editIncome(id, source, amount, date) {
         const amount = document.getElementById('amount').value;
         const date = document.getElementById('date').value;
 
-        // Send a PUT request to update the income
         fetch(`/income/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ source, amount, date })
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
+            console.log('Response status:', response.status); // Log response status
+            return response.text().then(text => {
+                console.log('Response text:', text); // Log response text
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return JSON.parse(text); // Attempt to parse JSON manually
+            });
         })
         .then(data => {
+            console.log('Server response:', data); // Log server response for debugging
             alert('Income updated');
             location.reload(); // Reload the page to reflect changes
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error); // Log error for debugging
+            alert('An error occurred. Please try again.');
+        });
     });
 }
 
-// Function to handle deleting income
 function deleteIncome(id) {
     if (confirm("Are you sure you want to delete this income?")) {
         fetch(`/income/${id}`, {
@@ -133,8 +143,6 @@ function deleteIncome(id) {
     }
 }
 
-
-// Function to cancel editing
 function cancelEdit() {
     const existingForm = document.querySelector('.edit-income-form');
     if (existingForm) {
