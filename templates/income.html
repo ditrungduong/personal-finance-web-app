@@ -16,8 +16,10 @@
     </nav>
     <div class="container">
         <section>
-            <h2 id="form-title">Add Income</h2>
-            <form id="income-form">
+            <h2>Current Income</h2>
+            <button onclick="showAddIncomeForm()">Add Income</button>
+            <form id="income-form" style="display:none;">
+                <h2 id="form-title">Add Income</h2>
                 <input type="hidden" id="income-id" name="income-id">
                 <label for="source">Source:</label>
                 <input type="text" id="source" name="source" required>
