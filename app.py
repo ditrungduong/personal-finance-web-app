@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
@@ -10,26 +10,53 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+class Income(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    source = db.Column(db.String(100), nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    date = db.Column(db.Date, nullable=False)
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
 @app.route('/income')
 def income():
-    return render_template('income.html')
+    incomes = Income.query.all()
+    return render_template('income.html', incomes=incomes)
 
-@app.route('/expenses')
-def expenses():
-    return render_template('expenses.html')
+@app.route('/income', methods=['POST'])
+def add_income():
+    data = request.get_json()
+    new_income = Income(
+        source=data['source'],
+        amount=data['amount'],
+        date=data['date']
+    )
+    db.session.add(new_income)
+    db.session.commit()
+    return jsonify({'message': 'Income added', 'income': {'source': new_income.source}})
 
-@app.route('/test_db')
-def test_db():
-    try:
-        # Attempt to connect to the database
-        db.session.execute('SELECT 1')
-        return 'Database connection is working!'
-    except Exception as e:
-        return f'Error: {e}'
+@app.route('/income/<int:id>', methods=['PUT'])
+def edit_income(id):
+    data = request.get_json()
+    income = Income.query.get(id)
+    if income:
+        income.source = data['source']
+        income.amount = data['amount']
+        income.date = data['date']
+        db.session.commit()
+        return jsonify({'message': 'Income updated'})
+    return jsonify({'message': 'Income not found'}), 404
+
+@app.route('/income/<int:id>', methods=['DELETE'])
+def delete_income(id):
+    income = Income.query.get(id)
+    if income:
+        db.session.delete(income)
+        db.session.commit()
+        return jsonify({'message': 'Income deleted'})
+    return jsonify({'message': 'Income not found'}), 404
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
