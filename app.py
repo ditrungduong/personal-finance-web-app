@@ -65,11 +65,11 @@ def edit_income(id):
             income.amount = data['amount']  # Update the amount from the request data
             income.date = datetime.strptime(data['date'], '%Y-%m-%d').date()  # Parse and update the date from the request data
             db.session.commit()  # Commit the session to save the updates to the database
-            return jsonify({'message': 'Income updated'})  # Return a JSON response
+            return jsonify({'message': 'Income updated'}), 200  # Return a JSON response
         return jsonify({'message': 'Income not found'}), 404  # Return a 404 response if the income was not found
     except Exception as e:
         db.session.rollback()
-        logging.error(f"Error updating income: {e}")
+        logging.error(f"Error updating income with id {id}: {e}")
         return jsonify({'error': 'Internal Server Error'}), 500
 
 # Define a route to handle deleting an existing income (DELETE request)
