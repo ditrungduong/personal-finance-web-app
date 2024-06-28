@@ -3,6 +3,7 @@
 <head>
     <title>Manage Income</title>
     <link rel="stylesheet" type="text/css" href="../static/styles.css">
+    <script src="../static/js/income.js" defer></script>
 </head>
 <body>
     <header>
@@ -15,15 +16,17 @@
     </nav>
     <div class="container">
         <section>
-            <h2>Add Income</h2>
+            <h2 id="form-title">Add Income</h2>
             <form id="income-form">
+                <input type="hidden" id="income-id" name="income-id">
                 <label for="source">Source:</label>
                 <input type="text" id="source" name="source" required>
                 <label for="amount">Amount:</label>
                 <input type="number" id="amount" name="amount" required>
                 <label for="date">Date:</label>
                 <input type="date" id="date" name="date" required>
-                <button type="submit">Add Income</button>
+                <button type="submit">Submit</button>
+                <button type="button" id="cancel-edit" style="display:none;" onclick="cancelEdit()">Cancel</button>
             </form>
         </section>
         <section>
@@ -53,6 +56,5 @@
             </table>
         </section>
     </div>
-    <script src="../static/js/income.js"></script>
 </body>
 </html>
