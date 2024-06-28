@@ -6,7 +6,7 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
     const date = document.getElementById('date').value;
 
     const method = id ? 'PUT' : 'POST';
-    const url = id ? /income/${id} : '/income';
+    const url = id ? `/income/${id}` : '/income';
 
     fetch(url, {
         method: method,
@@ -20,7 +20,12 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
             if (!response.ok) {
                 throw new Error('Network response was not ok: ' + response.statusText);
             }
-            return JSON.parse(text); // Attempt to parse JSON manually
+            try {
+                return JSON.parse(text); // Attempt to parse JSON manually
+            } catch (error) {
+                console.error('JSON parse error:', error);
+                throw new Error('Failed to parse JSON: ' + error.message);
+            }
         });
     })
     .then(data => {
@@ -34,24 +39,14 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
     });
 });
 
-function showAddIncomeForm() {
-    document.getElementById('add-income-form').style.display = 'block'; // Show the add income form
-    document.getElementById('form-title').textContent = 'Add Income'; // Set form title
-    document.getElementById('cancel-edit').style.display = 'inline'; // Show the cancel button
-}
-
 function editIncome(id, source, amount, date) {
-    // Remove any existing edit forms
     const existingForm = document.querySelector('.edit-income-form');
     if (existingForm) {
-        existingForm.remove(); // Remove the previously inserted edit form
+        existingForm.remove();
     }
 
-    // Get the row where the form should be inserted
-    const row = document.getElementById(income-row-${id});
-    
-    // Create the edit form HTML dynamically
-    const editFormHtml = 
+    const row = document.getElementById(`income-row-${id}`);
+    const editFormHtml = `
         <tr class="edit-income-form">
             <td colspan="4">
                 <form id="edit-income-form">
@@ -76,41 +71,44 @@ function editIncome(id, source, amount, date) {
                 </form>
             </td>
         </tr>
-    ;
+    `;
 
-    // Insert the edit form after the current row
     row.insertAdjacentHTML('afterend', editFormHtml);
 
-    // Add event listener to the dynamically created edit form
     document.getElementById('edit-income-form').addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevent the default form submission behavior
+        e.preventDefault();
         const id = document.getElementById('income-id').value;
         const source = document.getElementById('source').value;
         const amount = document.getElementById('amount').value;
         const date = document.getElementById('date').value;
 
-        fetch(/income/${id}, {
+        fetch(`/income/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ source, amount, date })
         })
         .then(response => {
-            console.log('Response status:', response.status); // Log response status
+            console.log('Response status:', response.status);
             return response.text().then(text => {
-                console.log('Response text:', text); // Log response text
+                console.log('Response text:', text);
                 if (!response.ok) {
                     throw new Error('Network response was not ok: ' + response.statusText);
                 }
-                return JSON.parse(text); // Attempt to parse JSON manually
+                try {
+                    return JSON.parse(text);
+                } catch (error) {
+                    console.error('JSON parse error:', error);
+                    throw new Error('Failed to parse JSON: ' + error.message);
+                }
             });
         })
         .then(data => {
-            console.log('Server response:', data); // Log server response for debugging
+            console.log('Server response:', data);
             alert('Income updated');
-            location.reload(); // Reload the page to reflect changes
+            location.reload();
         })
         .catch(error => {
-            console.error('Error:', error); // Log error for debugging
+            console.error('Error:', error);
             alert('An error occurred. Please try again.');
         });
     });
@@ -118,7 +116,7 @@ function editIncome(id, source, amount, date) {
 
 function deleteIncome(id) {
     if (confirm("Are you sure you want to delete this income?")) {
-        fetch(/income/${id}, {
+        fetch(`/income/${id}`, {
             method: 'DELETE',
         })
         .then(response => {
@@ -128,7 +126,12 @@ function deleteIncome(id) {
                 if (!response.ok) {
                     throw new Error('Network response was not ok: ' + response.statusText);
                 }
-                return JSON.parse(text); // Attempt to parse JSON manually
+                try {
+                    return JSON.parse(text); // Attempt to parse JSON manually
+                } catch (error) {
+                    console.error('JSON parse error:', error);
+                    throw new Error('Failed to parse JSON: ' + error.message);
+                }
             });
         })
         .then(data => {
