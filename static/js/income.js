@@ -113,11 +113,13 @@ function deleteIncome(id) {
         })
         .then(response => {
             console.log('Response status:', response.status); // Log response status
-            console.log('Response text:', response.text()); // Log response text
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json(); // Attempt to parse JSON
+            return response.text().then(text => {
+                console.log('Response text:', text); // Log response text
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return JSON.parse(text); // Attempt to parse JSON manually
+            });
         })
         .then(data => {
             console.log('Server response:', data); // Log server response for debugging
