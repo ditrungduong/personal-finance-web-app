@@ -21,6 +21,12 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
     .catch(error => console.error('Error:', error));
 });
 
+function showAddIncomeForm() {  // New function to show the form
+    document.getElementById('income-form').style.display = 'block';
+    document.getElementById('form-title').textContent = 'Add Income';
+    document.getElementById('cancel-edit').style.display = 'inline';
+}
+
 function editIncome(id, source, amount, date) {
     document.getElementById('income-id').value = id;
     document.getElementById('source').value = source;
@@ -28,6 +34,7 @@ function editIncome(id, source, amount, date) {
     document.getElementById('date').value = date;
 
     document.getElementById('form-title').textContent = 'Edit Income';
+    document.getElementById('income-form').style.display = 'block';  // Show form when editing
     document.getElementById('cancel-edit').style.display = 'inline';
 }
 
@@ -45,12 +52,13 @@ function deleteIncome(id) {
     }
 }
 
-function cancelEdit() {
+function cancelEdit() {  // Function to cancel editing
     document.getElementById('income-id').value = '';
     document.getElementById('source').value = '';
     document.getElementById('amount').value = '';
     document.getElementById('date').value = '';
 
     document.getElementById('form-title').textContent = 'Add Income';
+    document.getElementById('income-form').style.display = 'none';  // Hide form when canceling
     document.getElementById('cancel-edit').style.display = 'none';
 }

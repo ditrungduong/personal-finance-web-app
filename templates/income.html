@@ -17,8 +17,8 @@
     <div class="container">
         <section>
             <h2>Current Income</h2>
-            <button onclick="showAddIncomeForm()">Add Income</button>
-            <form id="income-form" style="display:none;">
+            <button onclick="showAddIncomeForm()">Add Income</button> <!-- Button to show form -->
+            <form id="income-form" style="display:none;"> <!-- Form hidden initially -->
                 <h2 id="form-title">Add Income</h2>
                 <input type="hidden" id="income-id" name="income-id">
                 <label for="source">Source:</label>
@@ -28,7 +28,7 @@
                 <label for="date">Date:</label>
                 <input type="date" id="date" name="date" required>
                 <button type="submit">Submit</button>
-                <button type="button" id="cancel-edit" style="display:none;" onclick="cancelEdit()">Cancel</button>
+                <button type="button" id="cancel-edit" style="display:none;" onclick="cancelEdit()">Cancel</button> <!-- Cancel button hidden initially -->
             </form>
         </section>
         <section>
