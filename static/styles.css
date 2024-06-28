@@ -134,3 +134,56 @@ footer {
 .btn-manage-expenses {
     color: white; /* Text color for Manage Expenses button */
 }
+/* General styles for the whole application */
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+}
+
+nav {
+    margin: 20px;
+}
+
+.container {
+    padding: 20px;
+}
+
+form {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+button {
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+button[type="button"] {
+    background-color: #f44336;
+    color: white;
+    border: none;
+}
