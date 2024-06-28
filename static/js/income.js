@@ -20,12 +20,7 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
             if (!response.ok) {
                 throw new Error('Network response was not ok: ' + response.statusText);
             }
-            try {
-                return JSON.parse(text); // Attempt to parse JSON manually
-            } catch (error) {
-                console.error('JSON parse error:', error);
-                throw new Error('Failed to parse JSON: ' + error.message);
-            }
+            return JSON.parse(text); // Attempt to parse JSON manually
         });
     })
     .then(data => {
@@ -38,6 +33,12 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
         alert('An error occurred. Please try again.');
     });
 });
+
+function showAddIncomeForm() {
+    document.getElementById('add-income-form').style.display = 'block'; // Show the add income form
+    document.getElementById('form-title').textContent = 'Add Income'; // Set form title
+    document.getElementById('cancel-edit').style.display = 'inline'; // Show the cancel button
+}
 
 function editIncome(id, source, amount, date) {
     const existingForm = document.querySelector('.edit-income-form');
@@ -94,12 +95,7 @@ function editIncome(id, source, amount, date) {
                 if (!response.ok) {
                     throw new Error('Network response was not ok: ' + response.statusText);
                 }
-                try {
-                    return JSON.parse(text);
-                } catch (error) {
-                    console.error('JSON parse error:', error);
-                    throw new Error('Failed to parse JSON: ' + error.message);
-                }
+                return JSON.parse(text);
             });
         })
         .then(data => {
@@ -120,18 +116,41 @@ function deleteIncome(id) {
             method: 'DELETE',
         })
         .then(response => {
+            console.log('Response status:', response.status);
+            return response.text().then(text => {
+                console.log('Response text:', text);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return JSON.parse(text);
+            });
+        })
+        .then(data => {
+            console.log('Server response:', data);
+            alert(data.message);
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        });
+    }
+}
+
+
+function deleteIncome(id) {
+    if (confirm("Are you sure you want to delete this income?")) {
+        fetch(`/income/${id}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
             console.log('Response status:', response.status); // Log response status
             return response.text().then(text => {
                 console.log('Response text:', text); // Log response text
                 if (!response.ok) {
                     throw new Error('Network response was not ok: ' + response.statusText);
                 }
-                try {
-                    return JSON.parse(text); // Attempt to parse JSON manually
-                } catch (error) {
-                    console.error('JSON parse error:', error);
-                    throw new Error('Failed to parse JSON: ' + error.message)
-                }
+                return JSON.parse(text); // Attempt to parse JSON manually
             });
         })
         .then(data => {
