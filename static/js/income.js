@@ -41,16 +41,12 @@ function showAddIncomeForm() {
 }
 
 function editIncome(id, source, amount, date) {
-    // Remove any existing edit forms
     const existingForm = document.querySelector('.edit-income-form');
     if (existingForm) {
-        existingForm.remove(); // Remove the previously inserted edit form
+        existingForm.remove();
     }
 
-    // Get the row where the form should be inserted
     const row = document.getElementById(`income-row-${id}`);
-    
-    // Create the edit form HTML dynamically
     const editFormHtml = `
         <tr class="edit-income-form">
             <td colspan="4">
@@ -78,12 +74,10 @@ function editIncome(id, source, amount, date) {
         </tr>
     `;
 
-    // Insert the edit form after the current row
     row.insertAdjacentHTML('afterend', editFormHtml);
 
-    // Add event listener to the dynamically created edit form
     document.getElementById('edit-income-form').addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevent the default form submission behavior
+        e.preventDefault();
         const id = document.getElementById('income-id').value;
         const source = document.getElementById('source').value;
         const amount = document.getElementById('amount').value;
@@ -95,26 +89,54 @@ function editIncome(id, source, amount, date) {
             body: JSON.stringify({ source, amount, date })
         })
         .then(response => {
-            console.log('Response status:', response.status); // Log response status
+            console.log('Response status:', response.status);
             return response.text().then(text => {
-                console.log('Response text:', text); // Log response text
+                console.log('Response text:', text);
                 if (!response.ok) {
                     throw new Error('Network response was not ok: ' + response.statusText);
                 }
-                return JSON.parse(text); // Attempt to parse JSON manually
+                return JSON.parse(text);
             });
         })
         .then(data => {
-            console.log('Server response:', data); // Log server response for debugging
+            console.log('Server response:', data);
             alert('Income updated');
-            location.reload(); // Reload the page to reflect changes
+            location.reload();
         })
         .catch(error => {
-            console.error('Error:', error); // Log error for debugging
+            console.error('Error:', error);
             alert('An error occurred. Please try again.');
         });
     });
 }
+
+function deleteIncome(id) {
+    if (confirm("Are you sure you want to delete this income?")) {
+        fetch(`/income/${id}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.text().then(text => {
+                console.log('Response text:', text);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return JSON.parse(text);
+            });
+        })
+        .then(data => {
+            console.log('Server response:', data);
+            alert(data.message);
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        });
+    }
+}
+
 
 function deleteIncome(id) {
     if (confirm("Are you sure you want to delete this income?")) {
