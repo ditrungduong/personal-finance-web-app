@@ -18,6 +18,9 @@ db = SQLAlchemy(app)
 # Initialize Flask-Migrate to handle database migrations
 migrate = Migrate(app, db)
 
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+
 # Define a model (a Python class) for the 'Income' table in the database
 class Income(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # Primary key column
@@ -48,6 +51,7 @@ def add_income():
         )
         db.session.add(new_income)  # Add the new income record to the database session
         db.session.commit()  # Commit the session to save the new income record to the database
+        logging.info(f"Added new income: {new_income}")
         return jsonify({'message': 'Income added', 'income': {'source': new_income.source}}), 201  # Return a JSON response
     except Exception as e:
         db.session.rollback()
@@ -65,7 +69,9 @@ def edit_income(id):
             income.amount = data['amount']  # Update the amount from the request data
             income.date = datetime.strptime(data['date'], '%Y-%m-%d').date()  # Parse and update the date from the request data
             db.session.commit()  # Commit the session to save the updates to the database
+            logging.info(f"Updated income with id {id}")
             return jsonify({'message': 'Income updated'}), 200  # Return a JSON response
+        logging.warning(f"Income with id {id} not found")
         return jsonify({'message': 'Income not found'}), 404  # Return a 404 response if the income was not found
     except Exception as e:
         db.session.rollback()
@@ -80,13 +86,14 @@ def delete_income(id):
         if income:
             db.session.delete(income)  # Delete the income record from the database session
             db.session.commit()  # Commit the session to delete the income record from the database
+            logging.info(f"Deleted income with id {id}")
             return jsonify({'message': 'Income deleted'}), 200  # Return a JSON response with HTTP 200 status
+        logging.warning(f"Income with id {id} not found")
         return jsonify({'message': 'Income not found'}), 404  # Return a 404 response if the income was not found
     except Exception as e:
         db.session.rollback()
         logging.error(f"Error deleting income: {e}")
         return jsonify({'error': 'Internal Server Error'}), 500
-
 
 # Run the app if this script is executed
 if __name__ == '__main__':
