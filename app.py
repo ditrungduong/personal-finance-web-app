@@ -22,6 +22,15 @@ def income():
 def expenses():
     return render_template('expenses.html')
 
+@app.route('/test_db')
+def test_db():
+    try:
+        # Attempt to connect to the database
+        db.session.execute('SELECT 1')
+        return 'Database connection is working!'
+    except Exception as e:
+        return f'Error: {e}'
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
