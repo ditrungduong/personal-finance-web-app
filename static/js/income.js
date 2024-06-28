@@ -13,18 +13,11 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ source, amount, date })
     })
-    .then(response => {
-        console.log('Response status:', response.status); // Log response status
-        return response.text().then(text => {
-            console.log('Response text:', text); // Log response text
-            if (!response.ok) {
-                throw new Error('Network response was not ok: ' + response.statusText);
-            }
-            return JSON.parse(text); // Attempt to parse JSON manually
-        });
-    })
+    .then(response => response.json())
     .then(data => {
-        console.log('Server response:', data); // Log server response for debugging
+        if (!response.ok) {
+            throw new Error(data.error || 'Network response was not ok');
+        }
         alert(id ? 'Income updated' : 'Income added');
         location.reload(); // Reload the page to reflect changes
     })
@@ -88,18 +81,11 @@ function editIncome(id, source, amount, date) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ source, amount, date })
         })
-        .then(response => {
-            console.log('Response status:', response.status);
-            return response.text().then(text => {
-                console.log('Response text:', text);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok: ' + response.statusText);
-                }
-                return JSON.parse(text);
-            });
-        })
+        .then(response => response.json())
         .then(data => {
-            console.log('Server response:', data);
+            if (!response.ok) {
+                throw new Error(data.error || 'Network response was not ok');
+            }
             alert('Income updated');
             location.reload();
         })
@@ -115,46 +101,11 @@ function deleteIncome(id) {
         fetch(`/income/${id}`, {
             method: 'DELETE',
         })
-        .then(response => {
-            console.log('Response status:', response.status);
-            return response.text().then(text => {
-                console.log('Response text:', text);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok: ' + response.statusText);
-                }
-                return JSON.parse(text);
-            });
-        })
+        .then(response => response.json())
         .then(data => {
-            console.log('Server response:', data);
-            alert(data.message);
-            location.reload();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-        });
-    }
-}
-
-
-function deleteIncome(id) {
-    if (confirm("Are you sure you want to delete this income?")) {
-        fetch(`/income/${id}`, {
-            method: 'DELETE',
-        })
-        .then(response => {
-            console.log('Response status:', response.status); // Log response status
-            return response.text().then(text => {
-                console.log('Response text:', text); // Log response text
-                if (!response.ok) {
-                    throw new Error('Network response was not ok: ' + response.statusText);
-                }
-                return JSON.parse(text); // Attempt to parse JSON manually
-            });
-        })
-        .then(data => {
-            console.log('Server response:', data); // Log server response for debugging
+            if (!response.ok) {
+                throw new Error(data.error || 'Network response was not ok');
+            }
             alert(data.message);
             location.reload(); // Reload the page to reflect changes
         })

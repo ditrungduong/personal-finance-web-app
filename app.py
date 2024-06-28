@@ -72,7 +72,6 @@ def edit_income(id):
         logging.error(f"Error updating income with id {id}: {e}")
         return jsonify({'error': 'Internal Server Error'}), 500
 
-
 # Define a route to handle deleting an existing income (DELETE request)
 @app.route('/income/<int:id>', methods=['DELETE'])
 def delete_income(id):
@@ -87,7 +86,6 @@ def delete_income(id):
         db.session.rollback()
         logging.error(f"Error deleting income: {e}")
         return jsonify({'error': 'Internal Server Error'}), 500
-
 
 # Run the app if this script is executed
 if __name__ == '__main__':
