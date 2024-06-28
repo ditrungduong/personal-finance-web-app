@@ -10,8 +10,8 @@
     </header>
     <nav>
         <button id="nav-home" onclick="location.href='/'">Home</button>
-        <button class="nav-track-income" onclick="location.href='/income.html'">Track Income</button>
-        <button class="nav-track-expenses" onclick="location.href='/expenses.html'">Track Expenses</button>
+        <button class="nav-track-income" onclick="location.href='/income'">Track Income</button>
+        <button class="nav-track-expenses" onclick="location.href='/expenses'">Track Expenses</button>
     </nav>
     <div class="container">
         <section>
@@ -26,6 +26,32 @@
                 <button type="submit">Add Income</button>
             </form>
         </section>
+        <section>
+            <h2>Current Income</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="income-table-body">
+                    {% for income in incomes %}
+                    <tr>
+                        <td>{{ income.source }}</td>
+                        <td>{{ income.amount }}</td>
+                        <td>{{ income.date }}</td>
+                        <td>
+                            <button onclick="editIncome({{ income.id }}, '{{ income.source }}', {{ income.amount }}, '{{ income.date }}')">Edit</button>
+                            <button onclick="deleteIncome({{ income.id }})">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
     </div>
     <script>
         document.getElementById('income-form').addEventListener('submit', function(e) {
@@ -34,14 +60,47 @@
             const amount = document.getElementById('amount').value;
             const date = document.getElementById('date').value;
 
-            fetch('http://localhost:5000/incomes', {
+            fetch('/income', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ source, amount, date })
             }).then(response => response.json())
-              .then(data => alert('Income added: ' + data))
+              .then(data => {
+                  alert('Income added: ' + data.income.source);
+                  location.reload();
+              })
               .catch(error => console.error('Error:', error));
         });
+
+        function editIncome(id, source, amount, date) {
+            const newSource = prompt("Enter new source:", source);
+            const newAmount = prompt("Enter new amount:", amount);
+            const newDate = prompt("Enter new date:", date);
+
+            fetch(`/income/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ source: newSource, amount: newAmount, date: newDate })
+            }).then(response => response.json())
+              .then(data => {
+                  alert(data.message);
+                  location.reload();
+              })
+              .catch(error => console.error('Error:', error));
+        }
+
+        function deleteIncome(id) {
+            if (confirm("Are you sure you want to delete this income?")) {
+                fetch(`/income/${id}`, {
+                    method: 'DELETE',
+                }).then(response => response.json())
+                  .then(data => {
+                      alert(data.message);
+                      location.reload();
+                  })
+                  .catch(error => console.error('Error:', error));
+            }
+        }
     </script>
 </body>
 </html>
