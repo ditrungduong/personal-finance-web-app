@@ -112,18 +112,25 @@ function deleteIncome(id) {
             method: 'DELETE',
         })
         .then(response => {
+            console.log('Response status:', response.status); // Log response status
+            console.log('Response text:', response.text()); // Log response text
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
             }
-            return response.json();
+            return response.json(); // Attempt to parse JSON
         })
         .then(data => {
+            console.log('Server response:', data); // Log server response for debugging
             alert(data.message);
             location.reload(); // Reload the page to reflect changes
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error); // Log error for debugging
+            alert('An error occurred. Please try again.');
+        });
     }
 }
+
 
 // Function to cancel editing
 function cancelEdit() {

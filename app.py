@@ -80,12 +80,13 @@ def delete_income(id):
         if income:
             db.session.delete(income)  # Delete the income record from the database session
             db.session.commit()  # Commit the session to delete the income record from the database
-            return jsonify({'message': 'Income deleted'})  # Return a JSON response
+            return jsonify({'message': 'Income deleted'}), 200  # Return a JSON response with HTTP 200 status
         return jsonify({'message': 'Income not found'}), 404  # Return a 404 response if the income was not found
     except Exception as e:
         db.session.rollback()
         logging.error(f"Error deleting income: {e}")
         return jsonify({'error': 'Internal Server Error'}), 500
+
 
 # Run the app if this script is executed
 if __name__ == '__main__':
