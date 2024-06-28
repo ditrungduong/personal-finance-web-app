@@ -2,9 +2,10 @@ from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
+from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://b8e2fa0e4c74d9:d8f543d8@us-cluster-east-01.k8s.cleardb.net/heroku_6c38564e8dba3e8?reconnect=true'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://b8e2fa0e4c74d9:d8f543d8@us-cluster-east-01.k8s.cleardb.net/heroku_6c38564e8dba3e8'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -31,7 +32,7 @@ def add_income():
     new_income = Income(
         source=data['source'],
         amount=data['amount'],
-        date=data['date']
+        date=datetime.strptime(data['date'], '%Y-%m-%d').date()
     )
     db.session.add(new_income)
     db.session.commit()
@@ -44,7 +45,7 @@ def edit_income(id):
     if income:
         income.source = data['source']
         income.amount = data['amount']
-        income.date = data['date']
+        income.date = datetime.strptime(data['date'], '%Y-%m-%d').date()
         db.session.commit()
         return jsonify({'message': 'Income updated'})
     return jsonify({'message': 'Income not found'}), 404
