@@ -13,11 +13,23 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ source, amount, date })
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('Response status:', response.status); // Log response status
+        return response.text().then(text => {
+            console.log('Response text:', text); // Log response text
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            try {
+                return JSON.parse(text); // Attempt to parse JSON manually
+            } catch (error) {
+                console.error('JSON parse error:', error);
+                throw new Error('Failed to parse JSON: ' + error.message);
+            }
+        });
+    })
     .then(data => {
-        if (!response.ok) {
-            throw new Error(data.error || 'Network response was not ok');
-        }
+        console.log('Server response:', data); // Log server response for debugging
         alert(id ? 'Income updated' : 'Income added');
         location.reload(); // Reload the page to reflect changes
     })
@@ -26,12 +38,6 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
         alert('An error occurred. Please try again.');
     });
 });
-
-function showAddIncomeForm() {
-    document.getElementById('add-income-form').style.display = 'block'; // Show the add income form
-    document.getElementById('form-title').textContent = 'Add Income'; // Set form title
-    document.getElementById('cancel-edit').style.display = 'inline'; // Show the cancel button
-}
 
 function editIncome(id, source, amount, date) {
     const existingForm = document.querySelector('.edit-income-form');
@@ -81,11 +87,23 @@ function editIncome(id, source, amount, date) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ source, amount, date })
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.text().then(text => {
+                console.log('Response text:', text);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                try {
+                    return JSON.parse(text);
+                } catch (error) {
+                    console.error('JSON parse error:', error);
+                    throw new Error('Failed to parse JSON: ' + error.message);
+                }
+            });
+        })
         .then(data => {
-            if (!response.ok) {
-                throw new Error(data.error || 'Network response was not ok');
-            }
+            console.log('Server response:', data);
             alert('Income updated');
             location.reload();
         })
@@ -101,11 +119,23 @@ function deleteIncome(id) {
         fetch(`/income/${id}`, {
             method: 'DELETE',
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Response status:', response.status); // Log response status
+            return response.text().then(text => {
+                console.log('Response text:', text); // Log response text
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                try {
+                    return JSON.parse(text); // Attempt to parse JSON manually
+                } catch (error) {
+                    console.error('JSON parse error:', error);
+                    throw new Error('Failed to parse JSON: ' + error.message);
+                }
+            });
+        })
         .then(data => {
-            if (!response.ok) {
-                throw new Error(data.error || 'Network response was not ok');
-            }
+            console.log('Server response:', data); // Log server response for debugging
             alert(data.message);
             location.reload(); // Reload the page to reflect changes
         })
