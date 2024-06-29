@@ -1,5 +1,5 @@
 // editIncome.js
-export function editIncome(id, source, amount, date) {
+function editIncome(id, source, amount, date) {
     // Remove any existing edit forms
     const existingForm = document.querySelector('.edit-income-form');
     if (existingForm) {
