@@ -70,7 +70,7 @@ def edit_income(id):
     except Exception as e:
         db.session.rollback()
         logging.error(f"Error updating income with id {id}: {e}")
-        return jsonify({'error': 'Internal Server Error'}), 500
+        return jsonify({'error': str(e)}), 500
 
 # Define a route to handle deleting an existing income (DELETE request)
 @app.route('/income/<int:id>', methods=['DELETE'])
