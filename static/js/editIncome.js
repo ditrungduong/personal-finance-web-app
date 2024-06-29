@@ -43,10 +43,11 @@ function editIncome(id, source, amount, date) {
     // Add event listener to the dynamically created edit form
     document.getElementById('edit-income-form').addEventListener('submit', function(e) {
         e.preventDefault(); // Prevent the default form submission behavior
-        const id = document.getElementById('income-id').value;
-        const source = document.getElementById('source').value;
-        const amount = document.getElementById('amount').value;
-        const date = document.getElementById('date').value;
+        const form = e.target;
+        const id = form['income-id'].value;
+        const source = form['source'].value;
+        const amount = form['amount'].value;
+        const date = form['date'].value;
 
         fetch(`/income/${id}`, {
             method: 'PUT',
