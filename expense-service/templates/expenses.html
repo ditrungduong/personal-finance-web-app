@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Income Records</title>
+    <title>Expense Records</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <header>
-        <h1>Income Records</h1>
+        <h1>Expense Records</h1>
     </header>
     <nav>
         <button id="nav-home" onclick="location.href='http://localhost:5000'">Home</button>
@@ -17,29 +17,29 @@
         <button class="btn-manage-report" onclick="location.href='http://localhost:5003/report'">Report</button>
     </nav>
     <div class="container">
-        <section id="income-records">
-            <h2>Income Records</h2>
+        <section id="expense-records">
+            <h2>Expense Records</h2>
             <ul>
-                {% for income in incomes %}
-                <li>{{ income.source }}: ${{ income.amount }} on {{ income.date }}</li>
+                {% for expense in expenses %}
+                <li>{{ expense.category }}: ${{ expense.amount }} on {{ expense.date }}</li>
                 {% endfor %}
             </ul>
         </section>
-        <section id="add-income">
-            <h2>Add Income</h2>
-            <form id="income-form">
-                <label for="source">Source:</label>
-                <input type="text" id="source" name="source" required>
+        <section id="add-expense">
+            <h2>Add Expense</h2>
+            <form id="expense-form">
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category" required>
                 <label for="amount">Amount:</label>
                 <input type="number" id="amount" name="amount" required>
                 <label for="date">Date:</label>
                 <input type="date" id="date" name="date" required>
-                <button type="submit">Add Income</button>
+                <button type="submit">Add Expense</button>
             </form>
         </section>
     </div>
     <footer>
-        <p>&copy; 2024 Income Service. All Rights Reserved.</p>
+        <p>&copy; 2024 Expense Service. All Rights Reserved.</p>
     </footer>
 </body>
 </html>
