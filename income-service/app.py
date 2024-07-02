@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
@@ -7,6 +7,7 @@ import logging
 
 # Initialize the Flask application
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # Add a secret key for session management
 
 # Configure the SQLAlchemy part of the app instance
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'mysql+pymysql://root:password@db/personal_finance_db')
@@ -18,6 +19,9 @@ db = SQLAlchemy(app)
 # Initialize Flask-Migrate to handle database migrations
 migrate = Migrate(app, db)
 
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+
 # Define a model (a Python class) for the 'Income' table in the database
 class Income(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # Primary key column
@@ -28,7 +32,9 @@ class Income(db.Model):
 # Define a route for the root URL
 @app.route('/')
 def index():
-    return render_template('index.html')  # Render the 'index.html' template
+    if 'username' in session:
+        return render_template('index.html')  # Render the 'index.html' template
+    return redirect(url_for('login'))  # Redirect to login page if not logged in
 
 # Define a route to display all incomes
 @app.route('/income')
@@ -90,6 +96,29 @@ def delete_income(id):
         db.session.rollback()
         logging.error(f"Error deleting income: {e}")
         return jsonify({'error': 'Internal Server Error'}), 500
+
+# Define a route to handle user login (GET and POST requests)
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # For demonstration, assume these are the valid credentials
+        if username == 'admin' and password == 'password':
+            session['username'] = username
+            return redirect(url_for('index'))  # Redirect to index page after successful login
+        else:
+            flash('Invalid credentials. Please try again.')
+            return redirect(url_for('login'))
+
+    return render_template('login.html')  # Render the 'login.html' template
+
+# Define a route to handle user logout
+@app.route('/logout')
+def logout():
+    session.pop('username', None)  # Remove the user session
+    return redirect(url_for('login'))  # Redirect to login page
 
 # Run the app if this script is executed
 if __name__ == '__main__':

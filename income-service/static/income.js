@@ -35,8 +35,18 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
 });
 
 function showAddIncomeForm() {
-    document.getElementById('add-income-form').style.display = 'block'; // Show the add income form
+    document.getElementById('income-form').reset(); // Reset form fields
     document.getElementById('form-title').textContent = 'Add Income'; // Set form title
+    document.getElementById('cancel-edit').style.display = 'none'; // Hide the cancel button
+}
+
+function editIncome(id, source, amount, date) {
+    document.getElementById('income-id').value = id;
+    document.getElementById('source').value = source;
+    document.getElementById('amount').value = amount;
+    document.getElementById('date').value = date;
+
+    document.getElementById('form-title').textContent = 'Edit Income'; // Set form title to Edit Income
     document.getElementById('cancel-edit').style.display = 'inline'; // Show the cancel button
 }
 
@@ -68,19 +78,7 @@ function deleteIncome(id) {
 }
 
 function cancelEdit() {
-    const existingForm = document.querySelector('.edit-income-form');
-    if (existingForm) {
-        existingForm.remove(); // Remove the edit form if the user cancels
-    }
-
-    const addIncomeForm = document.getElementById('add-income-form');
-    if (addIncomeForm && addIncomeForm.style.display === 'block') {
-        addIncomeForm.style.display = 'none'; // Hide the add income form if it's being displayed
-    }
-
-    // Reset the form fields
-    document.getElementById('income-id').value = '';
-    document.getElementById('source').value = '';
-    document.getElementById('amount').value = '';
-    document.getElementById('date').value = '';
+    document.getElementById('income-form').reset(); // Reset form fields
+    document.getElementById('form-title').textContent = 'Add Income'; // Reset form title to Add Income
+    document.getElementById('cancel-edit').style.display = 'none'; // Hide the cancel button
 }

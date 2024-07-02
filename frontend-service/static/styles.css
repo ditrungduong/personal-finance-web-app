@@ -187,3 +187,31 @@ button[type="button"] {
     color: white;
     border: none;
 }
+
+/* Login container styles */
+.login-container {
+    width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: rgba(69, 183, 82, 0.8); /* Semi-transparent white background */
+    color: #333; /* Dark text color for readability */
+}
+
+.login-container h2 {
+    text-align: center;
+    color: rgb(253, 253, 253); /* White text color for the login heading */
+}
+
+.login-container input[type="text"], .login-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 10px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.login-container button {
+    width: 100

@@ -1,17 +1,17 @@
-document.getElementById('income-form').addEventListener('submit', function(e) {
+document.getElementById('expense-form').addEventListener('submit', function(e) {
     e.preventDefault(); // Prevent the default form submission behavior
-    const id = document.getElementById('income-id').value;
-    const source = document.getElementById('source').value;
+    const id = document.getElementById('expense-id') ? document.getElementById('expense-id').value : null;
+    const category = document.getElementById('category').value;
     const amount = document.getElementById('amount').value;
     const date = document.getElementById('date').value;
 
     const method = id ? 'PUT' : 'POST';
-    const url = id ? `/income/${id}` : '/income';
+    const url = id ? `/expenses/${id}` : '/expenses';
 
     fetch(url, {
         method: method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source, amount, date })
+        body: JSON.stringify({ category, amount, date })
     })
     .then(response => {
         console.log('Response status:', response.status); // Log response status
@@ -25,7 +25,7 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
     })
     .then(data => {
         console.log('Server response:', data); // Log server response for debugging
-        alert(id ? 'Income updated' : 'Income added');
+        alert(id ? 'Expense updated' : 'Expense added');
         location.reload(); // Reload the page to reflect changes
     })
     .catch(error => {
@@ -34,15 +34,25 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
     });
 });
 
-function showAddIncomeForm() {
-    document.getElementById('add-income-form').style.display = 'block'; // Show the add income form
-    document.getElementById('form-title').textContent = 'Add Income'; // Set form title
+function showAddExpenseForm() {
+    document.getElementById('expense-form').reset(); // Reset form fields
+    document.getElementById('form-title').textContent = 'Add Expense'; // Set form title
+    document.getElementById('cancel-edit').style.display = 'none'; // Hide the cancel button
+}
+
+function editExpense(id, category, amount, date) {
+    document.getElementById('expense-id').value = id;
+    document.getElementById('category').value = category;
+    document.getElementById('amount').value = amount;
+    document.getElementById('date').value = date;
+
+    document.getElementById('form-title').textContent = 'Edit Expense'; // Set form title to Edit Expense
     document.getElementById('cancel-edit').style.display = 'inline'; // Show the cancel button
 }
 
-function deleteIncome(id) {
-    if (confirm("Are you sure you want to delete this income?")) {
-        fetch(`/income/${id}`, {
+function deleteExpense(id) {
+    if (confirm("Are you sure you want to delete this expense?")) {
+        fetch(`/expenses/${id}`, {
             method: 'DELETE',
         })
         .then(response => {
@@ -68,19 +78,7 @@ function deleteIncome(id) {
 }
 
 function cancelEdit() {
-    const existingForm = document.querySelector('.edit-income-form');
-    if (existingForm) {
-        existingForm.remove(); // Remove the edit form if the user cancels
-    }
-
-    const addIncomeForm = document.getElementById('add-income-form');
-    if (addIncomeForm && addIncomeForm.style.display === 'block') {
-        addIncomeForm.style.display = 'none'; // Hide the add income form if it's being displayed
-    }
-
-    // Reset the form fields
-    document.getElementById('income-id').value = '';
-    document.getElementById('source').value = '';
-    document.getElementById('amount').value = '';
-    document.getElementById('date').value = '';
+    document.getElementById('expense-form').reset(); // Reset form fields
+    document.getElementById('form-title').textContent = 'Add Expense'; // Reset form title to Add Expense
+    document.getElementById('cancel-edit').style.display = 'none'; // Hide the cancel button
 }
