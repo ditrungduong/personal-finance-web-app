@@ -19,8 +19,28 @@
         <button class="btn-logout" onclick="location.href='{{ url_for('logout') }}'">Logout</button>
     </nav>
     <div class="container">
+        <section id="add-expense">
+            <h2 id="form-title">Add Expense</h2>
+            <form id="expense-form">
+                <input type="hidden" id="expense-id" name="expense-id">
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <input type="text" id="category" name="category" required>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" name="amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <button type="submit">Submit</button>
+                <button type="button" id="cancel-edit" style="display:none;" onclick="cancelEdit()">Cancel</button>
+            </form>
+        </section>
         <section id="expense-records">
-            <h2>Expense Records</h2>
+        <h2>Expense Records</h2>
             <table>
                 <thead>
                     <tr>
@@ -44,26 +64,6 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </section>
-        <section id="add-expense">
-            <h2 id="form-title">Add Expense</h2>
-            <form id="expense-form">
-                <input type="hidden" id="expense-id" name="expense-id">
-                <div class="form-group">
-                    <label for="category">Category:</label>
-                    <input type="text" id="category" name="category" required>
-                </div>
-                <div class="form-group">
-                    <label for="amount">Amount:</label>
-                    <input type="number" id="amount" name="amount" required>
-                </div>
-                <div class="form-group">
-                    <label for="date">Date:</label>
-                    <input type="date" id="date" name="date" required>
-                </div>
-                <button type="submit">Submit</button>
-                <button type="button" id="cancel-edit" style="display:none;" onclick="cancelEdit()">Cancel</button>
-            </form>
         </section>
     </div>
     <footer>
