@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 import os
 from datetime import datetime
 import logging
+import requests  # Import requests library
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -28,6 +29,21 @@ class Expense(db.Model):
     category = db.Column(db.String(100), nullable=False)  # Expense category (string, required)
     amount = db.Column(db.Float, nullable=False)  # Amount of expense (float, required)
     date = db.Column(db.Date, nullable=False)  # Date of expense (date, required)
+
+# Define the Notification Service URL for internal Docker Compose network
+NOTIFICATION_SERVICE_URL = 'http://notification-service:5005/notify'
+
+def send_notification(recipient, subject, message):
+    data = {
+        'recipient': recipient,
+        'subject': subject,
+        'message': message
+    }
+    try:
+        response = requests.post(NOTIFICATION_SERVICE_URL, json=data)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Error sending notification: {e}")
 
 # Define a route for the root URL
 @app.route('/')
@@ -58,6 +74,10 @@ def add_expense():
         )
         db.session.add(new_expense)  # Add the new expense record to the database session
         db.session.commit()  # Commit the session to save the new expense record to the database
+        
+        # Send notification
+        send_notification('recipient@example.com', 'New Expense Added', f"Category: {new_expense.category}, Amount: {new_expense.amount}")
+
         return jsonify({'message': 'Expense added', 'expense': {'category': new_expense.category}}), 201  # Return a JSON response
     except Exception as e:
         db.session.rollback()
@@ -75,6 +95,10 @@ def edit_expense(id):
             expense.amount = data['amount']
             expense.date = datetime.strptime(data['date'], '%Y-%m-%d').date()
             db.session.commit()
+
+            # Send notification
+            send_notification('recipient@example.com', 'Expense Updated', f"Category: {expense.category}, Amount: {expense.amount}")
+
             return jsonify({'message': 'Expense updated'}), 200
         return jsonify({'message': 'Expense not found'}), 404
     except Exception as e:
@@ -90,6 +114,10 @@ def delete_expense(id):
         if expense:
             db.session.delete(expense)  # Delete the expense record from the database session
             db.session.commit()  # Commit the session to delete the expense record from the database
+
+            # Send notification
+            send_notification('recipient@example.com', 'Expense Deleted', f"Category: {expense.category}, Amount: {expense.amount}")
+
             return jsonify({'message': 'Expense deleted'}), 200  # Return a JSON response with HTTP 200 status
         return jsonify({'message': 'Expense not found'}), 404  # Return a 404 response if the expense was not found
     except Exception as e:

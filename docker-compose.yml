@@ -11,7 +11,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     networks:
-      - webapp-network
+      - shared-network
 
   income-service:
     build: ./income-service
@@ -24,7 +24,7 @@ services:
     depends_on:
       - db
     networks:
-      - webapp-network
+      - shared-network
 
   expense-service:
     build: ./expense-service
@@ -37,7 +37,7 @@ services:
     depends_on:
       - db
     networks:
-      - webapp-network
+      - shared-network
 
   frontend-service:
     build: ./frontend-service
@@ -51,11 +51,11 @@ services:
     depends_on:
       - db
     networks:
-      - webapp-network
+      - shared-network
 
 networks:
-  webapp-network:
-    driver: bridge
+  shared-network:
+    external: true
 
 volumes:
   db_data:

@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 import os
 from datetime import datetime
 import logging
+import requests  # Import requests library
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -28,6 +29,26 @@ class Income(db.Model):
     source = db.Column(db.String(100), nullable=False)  # Source of income (string, required)
     amount = db.Column(db.Float, nullable=False)  # Amount of income (float, required)
     date = db.Column(db.Date, nullable=False)  # Date of income (date, required)
+
+# Define the Notification Service URL for internal Docker Compose network
+NOTIFICATION_SERVICE_URL = 'http://notification-service:5005/notify'
+
+def send_notification(recipient, subject, message):
+    data = {
+        'recipient': recipient,
+        'subject': subject,
+        'message': message
+    }
+    try:
+        logging.info(f"Sending notification to {recipient} with subject {subject}")
+        response = requests.post(NOTIFICATION_SERVICE_URL, json=data)
+        logging.info(f"Notification request data: {data}")
+        logging.info(f"Notification service response status: {response.status_code}")
+        logging.info(f"Notification service response text: {response.text}")
+        response.raise_for_status()
+        logging.info(f"Notification sent successfully: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Error sending notification: {e}")
 
 # Define a route for the root URL
 @app.route('/')
@@ -58,6 +79,10 @@ def add_income():
         )
         db.session.add(new_income)  # Add the new income record to the database session
         db.session.commit()  # Commit the session to save the new income record to the database
+        
+        # Send notification
+        send_notification('recipient@example.com', 'New Income Added', f"Source: {new_income.source}, Amount: {new_income.amount}")
+
         return jsonify({'message': 'Income added', 'income': {'source': new_income.source}}), 201  # Return a JSON response
     except Exception as e:
         db.session.rollback()
@@ -75,6 +100,10 @@ def edit_income(id):
             income.amount = data['amount']
             income.date = datetime.strptime(data['date'], '%Y-%m-%d').date()
             db.session.commit()
+
+            # Send notification
+            send_notification('recipient@example.com', 'Income Updated', f"Source: {income.source}, Amount: {income.amount}")
+
             return jsonify({'message': 'Income updated'}), 200
         return jsonify({'message': 'Income not found'}), 404
     except Exception as e:
@@ -90,6 +119,10 @@ def delete_income(id):
         if income:
             db.session.delete(income)  # Delete the income record from the database session
             db.session.commit()  # Commit the session to delete the income record from the database
+
+            # Send notification
+            send_notification('recipient@example.com', 'Income Deleted', f"Source: {income.source}, Amount: {income.amount}")
+
             return jsonify({'message': 'Income deleted'}), 200  # Return a JSON response with HTTP 200 status
         return jsonify({'message': 'Income not found'}), 404  # Return a 404 response if the income was not found
     except Exception as e:
