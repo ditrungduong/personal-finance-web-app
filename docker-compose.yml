@@ -53,6 +53,19 @@ services:
     networks:
       - shared-network
 
+  reporting-service:
+    build: ./reporting-service
+    command: flask run --host=0.0.0.0 --port=5003
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=mysql+pymysql://root:password@db/personal_finance_db
+    ports:
+      - "5003:5003"
+    depends_on:
+      - db
+    networks:
+      - shared-network
+
 networks:
   shared-network:
     external: true

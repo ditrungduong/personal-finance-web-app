@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Financial Report</h1>
+    </header>
+    <nav>
+        <button onclick="location.href='http://localhost:5000'">Home</button>
+        <button onclick="location.href='http://localhost:5001/income'">Track Income</button>
+        <button onclick="location.href='http://localhost:5002/expenses'">Track Expenses</button>
+        <button onclick="location.href='http://localhost:5003/report'">Report</button>
+    </nav>
+    <div class="container">
+        <section id="time-period-selection">
+            <h2>Select Time Period</h2>
+            <form method="get" action="/report">
+                <select name="time_period" onchange="this.form.submit()">
+                    <option value="month" {% if selected_time_period == 'month' %}selected{% endif %}>1 Month</option>
+                    <option value="3_month" {% if selected_time_period == '3_month' %}selected{% endif %}>3 Months</option>
+                    <option value="6_month" {% if selected_time_period == '6_month' %}selected{% endif %}>6 Months</option>
+                    <option value="9_month" {% if selected_time_period == '9_month' %}selected{% endif %}>9 Months</option>
+                    <option value="year" {% if selected_time_period == 'year' %}selected{% endif %}>1 Year</option>
+                </select>
+            </form>
+        </section>
+        <section id="total-income-expense">
+            <h2>Total Income vs Expense</h2>
+            <div>{{ bar_chart|safe }}</div>
+        </section>
+        <section id="income-pie">
+            <h2>Income Sources</h2>
+            <div>{{ income_pie_chart|safe }}</div>
+        </section>
+        <section id="expense-pie">
+            <h2>Expense Categories</h2>
+            <div>{{ expense_pie_chart|safe }}</div>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2024 Personal Finance App. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
