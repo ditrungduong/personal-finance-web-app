@@ -50,7 +50,7 @@ def send_notification(recipient, subject, message):
 def index():
     if 'username' in session:
         return render_template('index.html')  # Render the 'index.html' template
-    return redirect(url_for('login'))  # Redirect to login page if not logged in
+    return redirect('http://localhost:5000/login')  # Redirect to frontend service login page if not logged in
 
 # Define a route to display all expenses
 @app.route('/expenses')
@@ -128,27 +128,17 @@ def delete_expense(id):
 # Define a route to handle user login (GET and POST requests)
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        # For demonstration, assume these are the valid credentials
-        if username == 'admin' and password == 'password':
-            session['username'] = username
-            return redirect(url_for('index'))  # Redirect to index page after successful login
-        else:
-            flash('Invalid credentials. Please try again.')
-            return redirect(url_for('login'))
-
-    return render_template('login.html')  # Render the 'login.html' template
+    return redirect('http://localhost:5000/login')  # Redirect to frontend service login page
 
 # Define a route to handle user logout
 @app.route('/logout')
 def logout():
     session.pop('username', None)  # Remove the user session
-    return redirect(url_for('login'))  # Redirect to login page
+    return redirect('http://localhost:5000/login')  # Redirect to frontend service login page
 
 # Run the app if this script is executed
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()  # Create database tables for the data models
     port = int(os.environ.get('PORT', 5002))  # Get the port from the environment or default to 5002
     app.run(debug=True, host='0.0.0.0', port=port)  # Run the app with debugging enabled

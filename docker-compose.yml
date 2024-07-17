@@ -66,9 +66,30 @@ services:
     networks:
       - shared-network
 
+  update-password-service:
+    build: ./update-password-service
+    command: flask run --host=0.0.0.0 --port=5004
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=mysql+pymysql://root:password@db/personal_finance_db
+    ports:
+      - "5004:5004"
+    depends_on:
+      - db
+    networks:
+      - shared-network
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - shared-network
+
 networks:
   shared-network:
-    external: true
+    driver: bridge
 
 volumes:
   db_data:

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'mysql+pymysql://root:password@db/personal_finance_db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = 'your_secret_key'  # Add a secret key for session management
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -70,6 +71,13 @@ def report():
     bar_chart, income_pie_chart, expense_pie_chart = create_charts(time_period)
     return render_template('report.html', bar_chart=bar_chart, income_pie_chart=income_pie_chart, expense_pie_chart=expense_pie_chart, selected_time_period=time_period)
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)  # Remove the user session
+    return redirect('http://localhost:5000/login')  # Redirect to frontend service login page
+    
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()  # Create database tables for the data models
     port = int(os.environ.get('PORT', 5003))
     app.run(debug=True, host='0.0.0.0', port=port)
