@@ -51,7 +51,7 @@ function editIncome(id, source, amount, date) {
 }
 
 function deleteIncome(id) {
-    if (confirm("Are you sure you want to delete this income?")) {
+    if (confirm("Are you sure you want to delete this income?\n\nWarning: This action is irreversible. Once deleted, the expense data will be permanently lost and cannot be recovered.")) {
         fetch(`/income/${id}`, {
             method: 'DELETE',
         })
