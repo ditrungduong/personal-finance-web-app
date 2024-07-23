@@ -31,7 +31,7 @@ def update_password():
         user = User.query.filter_by(username=username).first()
 
         if user and check_password_hash(user.password, old_password):
-            user.password = generate_password_hash(new_password)
+            user.password = generate_password_hash(new_password, method='pbkdf2:sha256')  # Correct hashing method
             db.session.commit()
             flash('Password updated successfully.')
             return redirect(url_for('update_password'))
@@ -44,7 +44,7 @@ def update_password():
 @app.route('/logout')
 def logout():
     session.pop('username', None)  # Remove the user session
-    return redirect(url_for('login'))  # Redirect to login page
+    return redirect('http://localhost:5000/login')  # Redirect to frontend service login page
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5004))  # Get the port from the environment or default to 5004
