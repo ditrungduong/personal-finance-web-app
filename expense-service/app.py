@@ -110,16 +110,16 @@ def edit_expense(id):
 @app.route('/expenses/<int:id>', methods=['DELETE'])
 def delete_expense(id):
     try:
-        expense = Expense.query.get(id)  # Get the expense record by id from the database
+        expense = Expense.query.get(id)  
         if expense:
-            db.session.delete(expense)  # Delete the expense record from the database session
-            db.session.commit()  # Commit the session to delete the expense record from the database
+            db.session.delete(expense)  
+            db.session.commit()  
 
             # Send notification
             send_notification('recipient@example.com', 'Expense Deleted', f"Category: {expense.category}, Amount: {expense.amount}")
 
-            return jsonify({'message': 'Expense deleted'}), 200  # Return a JSON response with HTTP 200 status
-        return jsonify({'message': 'Expense not found'}), 404  # Return a 404 response if the expense was not found
+            return jsonify({'message': 'Expense deleted'}), 200  
+        return jsonify({'message': 'Expense not found'}), 404  
     except Exception as e:
         db.session.rollback()
         logging.error(f"Error deleting expense: {e}")
@@ -128,13 +128,13 @@ def delete_expense(id):
 # Define a route to handle user login (GET and POST requests)
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    return redirect('http://localhost:5000/login')  # Redirect to frontend service login page
+    return redirect('http://localhost:5000/login')  
 
 # Define a route to handle user logout
 @app.route('/logout')
 def logout():
     session.pop('username', None)  # Remove the user session
-    return redirect('http://localhost:5000/login')  # Redirect to frontend service login page
+    return redirect('http://localhost:5000/login')  
 
 # Run the app if this script is executed
 if __name__ == '__main__':
