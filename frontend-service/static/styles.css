@@ -1,3 +1,12 @@
+/* Ensure the body and HTML take full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
 /* styles.css */
 body {
     font-family: Arial, sans-serif;
@@ -5,16 +14,10 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    margin: 0;
-    padding: 0;
     color: #fff; /* White text for contrast */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
     position: relative;
     z-index: 1;
+    flex: 1; /* Allow body to expand to fill the remaining space */
 }
 
 body::before {
@@ -31,36 +34,37 @@ body::before {
 header {
     background-color: rgba(34, 139, 34, 0.8); /* Forest green semi-transparent background */
     color: white; /* Ensure the header text color is set to white */
-    padding: 10px 0;
+    padding: 8px 0; /* Slightly larger padding */
     text-align: center;
 }
 
 .login-container {
     background: #fff;
-    padding: 20px;
+    padding: 15px; /* Slightly larger padding */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 300px;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Slightly larger margin */
 }
 
 .introduction {
     text-align: center;
     width: 300px;
     color: #fff;
+    font-size: 15px; /* Slightly larger font size */
 }
 
 /* Additional styles to maintain current look and feel */
 nav {
     text-align: center;
-    margin: 20px 0;
+    margin: 15px 0; /* Slightly larger margin */
 }
 
 nav button {
-    margin: 0 15px;
-    padding: 10px 20px;
-    font-size: 16px;
+    margin: 0 12px; /* Slightly larger margin */
+    padding: 6px 12px; /* Slightly larger padding */
+    font-size: 15px; /* Slightly larger font size */
     color: white; /* Text color for navigation buttons */
     background-color: rgba(50, 205, 50, 0.8); /* Lime green semi-transparent background */
     border: none;
@@ -78,18 +82,22 @@ nav button:hover {
     overflow: hidden;
     position: relative;
     z-index: 2;
+    flex: 1; /* Allow the container to take up remaining space */
+    padding-bottom: 50px; /* Add padding at the bottom to ensure content doesn't overlap with footer */
 }
 
 section {
     background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
-    padding: 20px;
-    margin: 20px 0;
+    padding: 15px; /* Slightly larger padding */
+    margin: 15px 0; /* Slightly larger margin */
     border-radius: 8px;
     color: #333; /* Dark text color for readability */
+    font-size: 15px; /* Slightly larger font size */
 }
 
 h1, h2 {
     color: #ffffff; /* Default white text color */
+    font-size: 22px; /* Slightly larger font size */
 }
 
 #welcome h2 {
@@ -106,8 +114,8 @@ h1, h2 {
 
 /* General button styles */
 button {
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 6px 12px; /* Slightly larger padding */
+    font-size: 15px; /* Slightly larger font size */
     color: white; /* Text color for general buttons */
     background-color: rgba(50, 205, 50, 0.8); /* Lime green semi-transparent background */
     border: none;
@@ -124,11 +132,11 @@ footer {
     background-color: rgba(34, 139, 34, 0.8); /* Forest green background */
     color: white;
     text-align: center;
-    padding: 10px 0;
-    position: fixed;
+    padding: 12px 0; /* Slightly larger padding */
     width: 100%;
-    bottom: 0;
-    z-index: 2;
+    flex-shrink: 0; /* Ensure footer does not shrink */
+    position: relative;
+    margin-top: auto; /* Push the footer to the bottom */
 }
 
 /* Specific button styles */
@@ -156,6 +164,7 @@ footer {
 .btn-manage-expenses {
     color: white; /* Text color for Manage Expenses button */
 }
+
 /* General styles for the whole application */
 body {
     font-family: Arial, sans-serif;
@@ -163,28 +172,30 @@ body {
 
 header {
     text-align: center;
-    padding: 20px;
+    padding: 15px; /* Slightly larger padding */
 }
 
 nav {
-    margin: 20px;
+    margin: 15px; /* Slightly larger margin */
 }
 
 .container {
-    padding: 20px;
+    padding: 15px; /* Slightly larger padding */
+    flex: 1;
 }
 
 form {
-    margin-top: 20px;
+    margin-top: 15px; /* Slightly larger margin */
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 15px; /* Slightly larger margin */
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 6px; /* Slightly larger margin */
+    font-size: 15px; /* Slightly larger font size */
 }
 
 .form-group input,
@@ -214,7 +225,7 @@ button[type="button"] {
 .login-container {
     width: 300px;
     margin: 50px auto;
-    padding: 20px;
+    padding: 15px; /* Slightly larger padding */
     border: 1px solid #ccc;
     border-radius: 5px;
     background: rgba(69, 183, 82, 0.8); /* Semi-transparent white background */
@@ -224,6 +235,7 @@ button[type="button"] {
 .login-container h2 {
     text-align: center;
     color: rgb(253, 253, 253); /* White text color for the login heading */
+    font-size: 20px; /* Slightly larger font size */
 }
 
 .login-container input[type="text"], .login-container input[type="password"] {
@@ -252,6 +264,7 @@ button[type="button"] {
 .introduction {
     text-align: center;
     width: 300px;
-    margin: 20px auto;
+    margin: 15px auto; /* Slightly larger margin */
     color: #ffffff; /* White text color */
+    font-size: 15px; /* Slightly larger font size */
 }

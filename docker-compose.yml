@@ -78,7 +78,17 @@ services:
       - db
     networks:
       - shared-network
-
+  
+  export-service:
+    build: ./export-service
+    environment:
+      - DATABASE_URL=mysql+pymysql://root:password@db/personal_finance_db
+    ports:
+      - "5007:5007"
+    depends_on:
+      - db
+    networks:
+      - shared-network
 
 networks:
   shared-network:

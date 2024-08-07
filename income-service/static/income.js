@@ -51,18 +51,21 @@ function editIncome(id, source, amount, date) {
 }
 
 function deleteIncome(id) {
-    if (confirm("Are you sure you want to delete this income?\n\nWarning: This action is irreversible. Once deleted, the expense data will be permanently lost and cannot be recovered.")) {
+    if (confirm("Are you sure you want to delete this income?\n\nWarning: This action is irreversible. Once deleted, the income data will be permanently lost and cannot be recovered.")) {
         fetch(`/income/${id}`, {
             method: 'DELETE',
         })
         .then(response => {
             console.log('Response status:', response.status); // Log response status
             return response.text().then(text => {
-                console.log('Response text:', text); // Log response text
                 if (!response.ok) {
                     throw new Error('Network response was not ok: ' + response.statusText);
                 }
-                return JSON.parse(text); // Attempt to parse JSON manually
+                try {
+                    return JSON.parse(text); // Attempt to parse JSON manually
+                } catch (error) {
+                    throw new Error('Failed to parse JSON: ' + error.message);
+                }
             });
         })
         .then(data => {
